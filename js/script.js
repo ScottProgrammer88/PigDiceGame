@@ -39,26 +39,34 @@ function rollDie() {
     let rollValue = generateRandomValue(1, 6);
     document.getElementById("die").value = rollValue.toString();
     if (rollValue === 1) {
-        changePlayers();
         currTotal = 0;
+        document.getElementById("total").value = currTotal.toString();
+        changePlayers();
     }
     else {
         currTotal += rollValue;
+        document.getElementById("total").value = currTotal.toString();
     }
-    document.getElementById("total").value = currTotal.toString();
 }
 function holdDie() {
     let currentTurnTotal = parseInt(document.getElementById("total").value);
     let currentPlayerName = document.getElementById("current").innerText;
+    let player1Score = parseInt(document.getElementById("score1").value);
+    let player2Score = parseInt(document.getElementById("score2").value);
     if (currentPlayerName === document.getElementById("player1").value) {
-        let player1Score = parseInt(document.getElementById("score1").value);
         player1Score += currentTurnTotal;
         document.getElementById("score1").value = player1Score.toString();
     }
     else {
-        let player2Score = parseInt(document.getElementById("score2").value);
         player2Score += currentTurnTotal;
-        document.getElementById("score1").value = player2Score.toString();
+        document.getElementById("score2").value = player2Score.toString();
+    }
+    if (player1Score >= 100 || player2Score >= 100) {
+        let winner = player1Score >= 100
+            ? document.getElementById("player1").value
+            : document.getElementById("player2").value;
+        alert(`${winner} Wins!`);
+        return;
     }
     document.getElementById("total").value = "0";
     changePlayers();

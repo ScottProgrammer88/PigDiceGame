@@ -67,19 +67,16 @@ function rollDie():void{
     //  change players
     //  set current total to 0
 
-    if(rollValue === 1) {
-        changePlayers();
+    if (rollValue === 1) {
         currTotal = 0;
-    }
-    
-    //if the roll is greater than 1
-    //  add roll value to current total
-    else {
+        (<HTMLInputElement>document.getElementById("total")).value = currTotal.toString();
+        changePlayers();
+    } else {  //if the roll is greater than 1 add roll value to current total
         currTotal += rollValue;
-    }
-
+    
     //display current total on form
     (<HTMLInputElement>document.getElementById("total")).value = currTotal.toString();
+    }
 }
 
 function holdDie():void {
@@ -89,15 +86,26 @@ function holdDie():void {
     //determine who the current player is  // use different variable name?
     let currentPlayerName = (<HTMLElement>document.getElementById("current")).innerText;
 
+    // declared outside of condition block
+    let player1Score = parseInt((<HTMLInputElement>document.getElementById("score1")).value);
+    let player2Score = parseInt((<HTMLInputElement>document.getElementById("score2")).value);
+
     //add the current turn total to the player's total score
     if (currentPlayerName === (<HTMLInputElement>document.getElementById("player1")).value) {
-        let player1Score = parseInt((<HTMLInputElement>document.getElementById("score1")).value);
         player1Score += currentTurnTotal;
         (<HTMLInputElement>document.getElementById("score1")).value = player1Score.toString();
     } else {
-        let player2Score = parseInt((<HTMLInputElement>document.getElementById("score2")).value);
         player2Score += currentTurnTotal;
-        (<HTMLInputElement>document.getElementById("score1")).value = player2Score.toString();
+        (<HTMLInputElement>document.getElementById("score2")).value = player2Score.toString();
+    }
+
+    // Game ends when one players Game Total is 100 point or more
+    if (player1Score >= 100 || player2Score >= 100) {
+        let winner = player1Score >= 100
+            ? (<HTMLInputElement>document.getElementById("player1")).value
+            : (<HTMLInputElement>document.getElementById("player2")).value;
+        alert(`${winner} Wins!`);
+        return;
     }
 
 
